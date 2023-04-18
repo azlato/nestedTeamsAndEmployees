@@ -5,13 +5,15 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import lightTheme from './theme';
 import TeamTree from './components/teamTree/TeamTree';
+import Header from './components/header/Header';
 
 function App() {
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
       <Container maxWidth="xl" sx={{ p: 3 }}>
-        <Typography variant="h1" sx={{ mb: 2 }}>Teams</Typography>
+        <Header />
+        <Typography variant="h2" sx={{ mb: 2 }}>Teams</Typography>
         <TeamTree />
       </Container>
     </ThemeProvider>
