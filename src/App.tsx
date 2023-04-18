@@ -1,21 +1,10 @@
 import React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-import TeamTree from './components/TeamTree';
-
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#02D076',
-    },
-    secondary: {
-      main: '#10BFFC',
-    },
-  },
-});
+import lightTheme from './theme';
+import TeamTree from './components/teamTree/TeamTree';
 
 function App() {
   return (
