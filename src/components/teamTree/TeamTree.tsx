@@ -11,14 +11,18 @@ function TeamTree() {
   const { teamToEmployeesMap } = useContext(EmployeeContext);
 
   return (
+    teamsMap.root
+    && (
     <TreeView
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
+      defaultExpanded={teamsMap.root.map((team) => team.id)}
     >
-      {teamsMap.root && teamsMap.root.map((item) => (
+      {teamsMap.root.map((item) => (
         <TeamTreeItem key={item.id} team={item} teamsMap={teamsMap} teamToEmployeesMap={teamToEmployeesMap} />
       ))}
     </TreeView>
+    )
   );
 }
 
