@@ -1,5 +1,7 @@
 import React from 'react';
-import TreeItem from '@mui/lab/TreeItem';
+import { styled } from '@mui/material/styles';
+import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
+import { Theme } from '@mui/material';
 import { ITeamData, ITeamsMap } from '../context/TeamContext';
 
 interface IProps {
@@ -7,14 +9,21 @@ interface IProps {
   teamsMap: ITeamsMap;
 }
 
+const StyledTeamTreeItem = styled(TreeItem)(({ theme }: { theme: Theme }) => ({
+  [`& .${treeItemClasses.content}`]: {
+    padding: theme.spacing(1),
+    borderRadius: theme.spacing(1),
+  },
+}));
+
 function TeamTreeItem({ team, teamsMap }: IProps): React.ReactElement {
   return (
-    <TreeItem nodeId={team.id} label={team.name}>
+    <StyledTeamTreeItem nodeId={team.id} label={team.name}>
       {teamsMap && teamsMap[team.id] && teamsMap[team.id].map((item) => (
         <TeamTreeItem key={item.id} team={item} teamsMap={teamsMap} />
       ))}
-    </TreeItem>
+    </StyledTeamTreeItem>
   );
 }
 
-export default TeamTreeItem;
+export default React.memo(TeamTreeItem);
