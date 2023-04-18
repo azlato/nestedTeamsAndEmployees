@@ -2,19 +2,48 @@ import React, { createContext, useMemo } from 'react';
 import useSWR from 'swr';
 import fetcher from '../utils/fetcher';
 
-interface ITeamsContext {
-  items: number[];
+export interface ITeamData {
+  'id': string;
+  'createdAt': string;
+  'name': string;
+  'parentTeam': null | string;
 }
 
-export const TeamContext = createContext<ITeamsContext>({ items: [] });
+export interface ITeamsMap {
+  [id: string]: ITeamData[];
+}
+
+interface ITeamsContext {
+  teamsMap: ITeamsMap;
+}
+
+export const TeamContext = createContext<ITeamsContext>({ teamsMap: {} });
 
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/teams?select=*';
 
 export function TeamContextProvider({ children }: { children: React.ReactNode }) {
-  const { data } = useSWR(API_URL, fetcher);
+  const { data } = useSWR<ITeamData[]>(API_URL, fetcher);
+
+  const teamsMap = useMemo(() => (data ? data.reduce<ITeamsMap>(
+    (result, item) => {
+      if (!item.parentTeam) {
+        result.root.push(item);
+      } else {
+        if (!result[item.parentTeam]) {
+          result[item.parentTeam] = [];
+        }
+
+        result[item.parentTeam].push(item);
+      }
+
+      return result;
+    },
+    { root: [] },
+  ) : ({} as ITeamsMap)), [data]);
 
   const value = useMemo(() => ({
-    items: data,
+    teamsMap,
   }), [data]);
+
   return <TeamContext.Provider value={value}>{children}</TeamContext.Provider>;
 }
