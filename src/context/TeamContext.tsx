@@ -28,8 +28,6 @@ export const TeamContext = createContext<ITeamsContext>({
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/teams';
 
 const postTeam = async (data: Partial<ITeamsMap>): Promise<string> => {
-  // return new Promise((resolve) => setTimeout(resolve, 1000));
-
   const response = await apiClient(API_URL, data);
   if (!response.ok) {
     throw new Error(`Failed to insert new team. Status ${response.statusText}: ${response.body}`);
@@ -52,6 +50,8 @@ export function TeamContextProvider({ children }: { children: React.ReactNode })
     },
   });
 
+  // Preparing data for rendering team tree. It is Map object, where key is 'id' of parent team and value is
+  // array of children teams. Top level has key named 'root'.
   const teamsMap = useMemo(() => (data ? data.reduce<ITeamsMap>(
     (result, item) => {
       if (!item.parentTeam) {

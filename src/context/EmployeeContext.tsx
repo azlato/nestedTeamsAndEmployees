@@ -1,7 +1,5 @@
 import React, { createContext, useMemo } from 'react';
-import {
-  useQuery, useQueryClient, useMutation,
-} from 'react-query';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
 import apiClient from '../utils/apiClient';
 
 export interface IEmployeeData {
@@ -54,6 +52,8 @@ export function EmployeeContextProvider({ children }: { children: React.ReactNod
     },
   });
 
+  // Preparing data for rendering team tree. It is Map object, where key is 'id' of parent team and value is
+  // array of children employee.
   const teamToEmployeesMap = useMemo(() => (data ? data.reduce<IEmployeesMap>(
     (result, item) => {
       if (!result[item.team]) {
