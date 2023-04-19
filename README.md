@@ -12,7 +12,7 @@
 - [TypeScript](https://www.typescriptlang.org/)
 - [Material UI](https://mui.com/material-ui/getting-started/overview/) based on Emotion with Tree view and Date picker packages
 - [Vite.js](https://vitejs.dev/)
-- [SWR](https://swr.vercel.app/) for data fetching
+- [React Query](https://tanstack.com/query/v3/docs/react/overview) for data fetching
 - [Formik](https://formik.org/) for forms
 
 This project was bootstrapped with [Create vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).

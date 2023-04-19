@@ -1,5 +1,5 @@
 import React, { createContext, useMemo } from 'react';
-import useSWR from 'swr';
+import { useQuery } from 'react-query'
 import fetcher from '../utils/fetcher';
 
 export interface IEmployeeData {
@@ -26,7 +26,7 @@ export const EmployeeContext = createContext<IEmployeesContext>({ teamToEmployee
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/employees?select=*';
 
 export function EmployeeContextProvider({ children }: { children: React.ReactNode }) {
-  const { data } = useSWR<IEmployeeData[]>(API_URL, fetcher);
+  const { data } = useQuery<IEmployeeData[]>('employee', () => fetcher(API_URL));
 
   const teamToEmployeesMap = useMemo(() => (data ? data.reduce<IEmployeesMap>(
     (result, item) => {
