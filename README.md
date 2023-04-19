@@ -28,5 +28,5 @@ This project was bootstrapped with [Create vite](https://vitejs.dev/guide/#scaff
 This project is using https://github.com/Naomak/alveno-job API
 
 There are two resources `Team` and `Employee`. Each resource have it´s own context for holding data and manipulating with it. For best usage data are saved also as a map.
-- For teams, there is need to hold reference of parent team. There is created `parentTeamToTeamsMap`, where key is 'id' of parent team and value is array of children teams. Top level has key named 'root'.
-- For emplyees, there is need to render items based on teamId. There is created `teamToEmployeesMap`, where key is 'id' of parent team and value is array of children employees.
+- There is need to hold reference of parent team. There is created `parentTeamToTeamsMap`, where key is 'id' of parent team and value is array of children teams. Top level has key named 'root'.
+- There is need to render items based on teamId. There is created `teamToEmployeesMap`, where key is 'id' of parent team and value is array of children employees.
