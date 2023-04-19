@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
-import { Button, Typography } from '@mui/material';
+import {
+  Button, Typography, FormControl, InputLabel, Select, MenuItem,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import { StyledTextField } from './AddTeamStyle';
+import { TeamContext } from '../../context/TeamContext';
 
 function AddTeam() {
+  const { teams } = useContext(TeamContext);
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -62,16 +67,20 @@ function AddTeam() {
           onChange={formik.handleChange}
           error={formik.touched.endDate && Boolean(formik.errors.endDate)}
         />
-        <StyledTextField
-          fullWidth
-          required
-          id="team"
-          name="team"
-          label="team"
-          value={formik.values.team}
-          onChange={formik.handleChange}
-          error={formik.touched.team && Boolean(formik.errors.team)}
-        />
+        <FormControl required fullWidth sx={{ mb: 1 }}>
+          <InputLabel id="teamLabel">Team</InputLabel>
+          <Select
+            labelId="teamLabel"
+            id="team"
+            name="team"
+            value={formik.values.team}
+            label="team"
+            onChange={formik.handleChange}
+            error={formik.touched.team && Boolean(formik.errors.team)}
+          >
+            {teams.map((team) => <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>)}
+          </Select>
+        </FormControl>
         <StyledTextField
           fullWidth
           required

@@ -15,9 +15,13 @@ export interface ITeamsMap {
 
 interface ITeamsContext {
   teamsMap: ITeamsMap;
+  teams: ITeamData[];
 }
 
-export const TeamContext = createContext<ITeamsContext>({ teamsMap: {} });
+export const TeamContext = createContext<ITeamsContext>({
+  teamsMap: {},
+  teams: [],
+});
 
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/teams?select=*';
 
@@ -43,6 +47,7 @@ export function TeamContextProvider({ children }: { children: React.ReactNode })
 
   const value = useMemo(() => ({
     teamsMap,
+    teams: data || [],
   }), [data]);
 
   return <TeamContext.Provider value={value}>{children}</TeamContext.Provider>;
