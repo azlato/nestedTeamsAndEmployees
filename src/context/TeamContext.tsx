@@ -1,6 +1,6 @@
 import React, { createContext, useMemo } from 'react';
-import { useQuery } from 'react-query'
-import fetcher from '../utils/fetcher';
+import { useQuery } from 'react-query';
+import apiClient from '../utils/apiClient';
 
 export interface ITeamData {
   'id': string;
@@ -26,7 +26,7 @@ export const TeamContext = createContext<ITeamsContext>({
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/teams?select=*';
 
 export function TeamContextProvider({ children }: { children: React.ReactNode }) {
-  const { data } = useQuery<ITeamData[]>('team', () => fetcher(API_URL));
+  const { data } = useQuery<ITeamData[]>('team', () => apiClient(API_URL));
 
   const teamsMap = useMemo(() => (data ? data.reduce<ITeamsMap>(
     (result, item) => {

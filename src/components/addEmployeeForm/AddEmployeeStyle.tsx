@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 
 export const StyledTextField = styled(TextField)(
   ({ theme }) => ({
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   }),
 );
 

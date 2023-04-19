@@ -1,14 +1,17 @@
 import React, { useContext } from 'react';
 import { useFormik } from 'formik';
+import dayjs from 'dayjs';
 import {
   Box, Button, Typography, FormControl, InputLabel, Select, MenuItem,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { StyledTextField } from './AddEmployeeStyle';
 import { TeamContext } from '../../context/TeamContext';
+import { EmployeeContext } from '../../context/EmployeeContext';
 
 function AddTeam() {
   const { teams } = useContext(TeamContext);
+  const { addEmployee } = useContext(EmployeeContext);
 
   const formik = useFormik({
     initialValues: {
@@ -20,7 +23,12 @@ function AddTeam() {
       position: '',
     },
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      const normalizedValues = {
+        ...values,
+        startDate: dayjs.isDayjs(values.startDate) ? values.startDate.format('YYYY-MM-DD') : values.startDate,
+        endDate: dayjs.isDayjs(values.endDate) ? values.endDate.format('YYYY-MM-DD') : values.endDate,
+      };
+      addEmployee(normalizedValues);
     },
   });
 
@@ -61,7 +69,7 @@ function AddTeam() {
               error: formik.touched.startDate && Boolean(formik.errors.startDate),
             },
           }}
-          sx={{ mb: 1 }}
+          sx={{ mb: 2 }}
         />
         <DatePicker
           format="YYYY-MM-DD"
@@ -75,9 +83,9 @@ function AddTeam() {
               error: formik.touched.endDate && Boolean(formik.errors.endDate),
             },
           }}
-          sx={{ mb: 1 }}
+          sx={{ mb: 2 }}
         />
-        <FormControl required fullWidth sx={{ mb: 1 }}>
+        <FormControl required fullWidth sx={{ mb: 2 }}>
           <InputLabel id="teamLabel">Team</InputLabel>
           <Select
             labelId="teamLabel"

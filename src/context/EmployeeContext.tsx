@@ -1,6 +1,8 @@
 import React, { createContext, useMemo } from 'react';
-import { useQuery } from 'react-query'
-import fetcher from '../utils/fetcher';
+import {
+  useQuery, useQueryClient, useMutation,
+} from 'react-query';
+import apiClient from '../utils/apiClient';
 
 export interface IEmployeeData {
   id: string;
@@ -19,14 +21,35 @@ export interface IEmployeesMap {
 
 interface IEmployeesContext {
   teamToEmployeesMap: IEmployeesMap;
+  addEmployee(data: Partial<IEmployeeData>): void;
 }
 
-export const EmployeeContext = createContext<IEmployeesContext>({ teamToEmployeesMap: {} });
+export const EmployeeContext = createContext<IEmployeesContext>({
+  teamToEmployeesMap: {},
+  addEmployee: () => {},
+});
 
-const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/employees?select=*';
+const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/employees';
+
+const postEmployee = async (data: Partial<IEmployeeData>): Promise<IEmployeeData> => {
+  const response = await apiClient(API_URL, data);
+  if (!response.ok) {
+    throw new Error('Failed to insert new employee', response);
+  }
+  return response.json();
+};
 
 export function EmployeeContextProvider({ children }: { children: React.ReactNode }) {
-  const { data } = useQuery<IEmployeeData[]>('employee', () => fetcher(API_URL));
+  const queryClient = useQueryClient();
+  const { data } = useQuery<IEmployeeData[]>('employee', () => apiClient(`${API_URL}?select=*`));
+
+  // Mutations
+  const { mutate: addEmployee } = useMutation(postEmployee, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries('employee');
+    },
+  });
 
   const teamToEmployeesMap = useMemo(() => (data ? data.reduce<IEmployeesMap>(
     (result, item) => {
@@ -43,6 +66,7 @@ export function EmployeeContextProvider({ children }: { children: React.ReactNod
 
   const value = useMemo(() => ({
     teamToEmployeesMap,
+    addEmployee,
   }), [data]);
 
   return <EmployeeContext.Provider value={value}>{children}</EmployeeContext.Provider>;
