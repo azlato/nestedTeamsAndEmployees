@@ -31,17 +31,20 @@ export const EmployeeContext = createContext<IEmployeesContext>({
 
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/employees';
 
-const postEmployee = async (data: Partial<IEmployeeData>): Promise<IEmployeeData> => {
+const postEmployee = async (data: Partial<IEmployeeData>): Promise<string> => {
   const response = await apiClient(API_URL, data);
   if (!response.ok) {
-    throw new Error('Failed to insert new employee', response);
+    throw new Error(`Failed to insert new employee. Status ${response.statusText}: ${response.body}`);
   }
-  return response.json();
+  return response.text();
 };
 
 export function EmployeeContextProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
-  const { data } = useQuery<IEmployeeData[]>('employee', () => apiClient(`${API_URL}?select=*`));
+  const { data } = useQuery<IEmployeeData[]>(
+    'employee',
+    () => apiClient(`${API_URL}?select=*`).then((res) => res.json()),
+  );
 
   // Mutations
   const { mutate: addEmployee } = useMutation(postEmployee, {

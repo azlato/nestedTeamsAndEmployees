@@ -5,11 +5,11 @@ import {
   Box, Button, Typography, FormControl, InputLabel, Select, MenuItem,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { StyledTextField } from './AddEmployeeStyle';
+import { StyledTextField } from './EmployeeFormStyle';
 import { TeamContext } from '../../context/TeamContext';
 import { EmployeeContext } from '../../context/EmployeeContext';
 
-function AddTeam() {
+function EmployeeForm() {
   const { teams } = useContext(TeamContext);
   const { addEmployee } = useContext(EmployeeContext);
 
@@ -26,7 +26,7 @@ function AddTeam() {
       const normalizedValues = {
         ...values,
         startDate: dayjs.isDayjs(values.startDate) ? values.startDate.format('YYYY-MM-DD') : values.startDate,
-        endDate: dayjs.isDayjs(values.endDate) ? values.endDate.format('YYYY-MM-DD') : values.endDate,
+        endDate: dayjs.isDayjs(values.endDate) ? values.endDate.format('YYYY-MM-DD') : null,
       };
       addEmployee(normalizedValues);
     },
@@ -110,11 +110,11 @@ function AddTeam() {
           error={formik.touched.position && Boolean(formik.errors.position)}
         />
         <Button color="secondary" variant="contained" fullWidth type="submit">
-          Add
+          Add employee
         </Button>
       </form>
     </Box>
   );
 }
 
-export default AddTeam;
+export default EmployeeForm;

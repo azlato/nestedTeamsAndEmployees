@@ -7,19 +7,15 @@ const headers = {
 const simpleApiClient = (url: string, body?: Object) => {
   const method = body ? 'POST' : 'GET';
   const data = body ? { body: JSON.stringify(body) } : {};
-  const customHeaders = body ? { Prefer: 'return=minimal' } : { Prefer: '' };
 
   return fetch(
     url,
     {
       method,
-      headers: {
-        ...headers,
-        ...customHeaders,
-      },
+      headers,
       ...data,
     },
-  ).then((res) => res.json());
+  );
 };
 
 export default simpleApiClient;

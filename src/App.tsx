@@ -1,5 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -7,7 +8,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import lightTheme from './theme';
 import TeamTree from './components/teamTree/TeamTree';
 import Header from './components/header/Header';
-import AddEmployee from './components/addEmployeeForm/AddEmployee';
+import EmployeeForm from './components/employeeForm/EmployeeForm';
+import TeamForm from './components/teamForm/TeamForm';
 
 function App() {
   return (
@@ -21,7 +23,9 @@ function App() {
             <TeamTree />
           </Grid>
           <Grid item xs={12} md={4}>
-            <AddEmployee />
+            <EmployeeForm />
+            <Box sx={{ mb: 4 }} />
+            <TeamForm />
           </Grid>
         </Grid>
       </Container>
