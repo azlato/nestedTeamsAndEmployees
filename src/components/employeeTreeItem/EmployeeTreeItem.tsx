@@ -16,6 +16,7 @@ function EmployeeItem({ employee }: IProps): React.ReactElement {
   const endDateFormatted = employee.endDate && new Date(employee.endDate).toLocaleDateString('cs-Cz');
 
   const onClick = useCallback(() => {
+    // Set param to open edit modal
     setSearchParams((prevParams: URLSearchParams) => {
       prevParams.set('employeeId', employee.id);
       return prevParams;

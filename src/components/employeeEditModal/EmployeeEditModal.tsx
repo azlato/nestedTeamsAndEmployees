@@ -7,7 +7,7 @@ import {
 import EmployeeForm from '../employeeForm/EmployeeForm';
 import { EmployeeContext, IEmployeeData } from '../../context/EmployeeContext';
 
-const style = {
+const modalBgStyle = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
@@ -47,9 +47,8 @@ function EmployeeEditModal() {
     });
   }, []);
 
-  const onSubmit = (values: Partial<IEmployeeData>) => {
+  const onEmployeeFormSubmit = (values: Partial<IEmployeeData>) => {
     updateEmployee(values);
-    console.log('submit', JSON.stringify(values, null, 2));
 
     // Close modal by removing id parameter
     onCloseModal();
@@ -61,7 +60,7 @@ function EmployeeEditModal() {
       aria-labelledby="employee-modal-title"
       onClose={onCloseModal}
     >
-      <Box sx={{ ...style, width: 600 }}>
+      <Box sx={{ ...modalBgStyle, width: 600 }}>
         <Typography variant="h6" id="employee-modal-title" sx={{ mb: 2 }}>
           Edit employee with id
           &quot;
@@ -73,7 +72,7 @@ function EmployeeEditModal() {
             <EmployeeForm
               isEditing
               initialValues={initialEmployeeData}
-              onSubmit={onSubmit}
+              onSubmit={onEmployeeFormSubmit}
             />
             )}
       </Box>

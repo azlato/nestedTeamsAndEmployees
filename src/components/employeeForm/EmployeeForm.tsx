@@ -20,13 +20,18 @@ function EmployeeForm({ isEditing, initialValues, onSubmit }: IProps) {
 
   const formik = useFormik({
     initialValues,
-    onSubmit: (values: { [name: string]: string | null | dayjs.Dayjs }) => {
+    onSubmit: (values: { [name: string]: string | null | dayjs.Dayjs }, { resetForm }) => {
       const normalizedValues = {
         ...values,
-        startDate: dayjs.isDayjs(values.startDate) ? values.startDate.format('YYYY-MM-DD') : values.startDate || '',
-        endDate: dayjs.isDayjs(values.endDate) ? values.endDate.format('YYYY-MM-DD') : null,
+        startDate:
+          dayjs.isDayjs(values.startDate) && values.startDate.isValid()
+            ? values.startDate.format('YYYY-MM-DD')
+            : '',
+        endDate: dayjs.isDayjs(values.endDate) && values.endDate.isValid() ? values.endDate.format('YYYY-MM-DD') : null,
       };
       onSubmit(normalizedValues);
+
+      resetForm();
     },
   });
 

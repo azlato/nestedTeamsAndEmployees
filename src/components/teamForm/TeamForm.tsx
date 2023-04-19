@@ -14,12 +14,14 @@ function TeamForm() {
       name: '',
       parentTeam: '',
     },
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       const normalizedValues = {
         ...values,
         parentTeam: values.parentTeam || null,
       };
       addTeam(normalizedValues);
+
+      resetForm();
     },
   });
 
