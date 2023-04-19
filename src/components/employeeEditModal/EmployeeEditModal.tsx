@@ -10,6 +10,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
+  maxWidth: '100%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -34,7 +35,7 @@ function EmployeeEditModal() {
       aria-labelledby="employee-modal-title"
       onClose={onClose}
     >
-      <Box sx={{ ...style, width: 400 }}>
+      <Box sx={{ ...style, width: 600 }}>
         <Typography variant="h6" id="employee-modal-title" sx={{ mb: 2 }}>
           Edit employee with id
           &quot;
