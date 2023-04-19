@@ -1,4 +1,6 @@
 import React from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import ReactDOM from 'react-dom/client';
 import { TeamContextProvider } from './context/TeamContext';
 import { EmployeeContextProvider } from './context/EmployeeContext';
@@ -8,7 +10,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <TeamContextProvider>
       <EmployeeContextProvider>
-        <App />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <App />
+        </LocalizationProvider>
       </EmployeeContextProvider>
     </TeamContextProvider>
   </React.StrictMode>,
