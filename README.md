@@ -7,6 +7,11 @@
 ## Installation
 1. `npm i`
 2. Set API key for communication. Create file `.env.local` with content `VITE_SUPABASE_KEY='string'`. If API calls are not still working, you can replace `import.meta.env.VITE_SUPABASE_KEY` with API key string inside `src/utils/apiClient.ts` file.
+3. `npm run dev` to start dev server
+
+## Scripts
+- `npm run dev`: Run local dev server
+- `npm run build`: Build project for production
 
 ## Used tehnology
 - [React.js](https://react.dev/)
@@ -18,10 +23,6 @@
 - [React router dom](https://reactrouter.com/en/6.10.0) for routing edit modal
 
 This project was bootstrapped with [Create vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
-
-## Scripts
-- `npm run dev`: Run local dev server
-- `npm run build`: Build project for production
 
 ## Project data
 This project is using https://github.com/Naomak/alveno-job API
