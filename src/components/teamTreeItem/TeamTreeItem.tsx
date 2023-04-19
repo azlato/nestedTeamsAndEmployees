@@ -6,11 +6,11 @@ import EmployeeTreeItem from '../employeeTreeItem/EmployeeTreeItem';
 
 interface IProps {
   team: ITeamData;
-  teamsMap: ITeamsMap;
+  parentTeamToTeamsMap: ITeamsMap;
   teamToEmployeesMap: IEmployeesMap;
 }
 
-function TeamTreeItem({ team, teamsMap, teamToEmployeesMap }: IProps): React.ReactElement {
+function TeamTreeItem({ team, parentTeamToTeamsMap, teamToEmployeesMap }: IProps): React.ReactElement {
   return (
     <StyledTeamTreeItem
       nodeId={team.id}
@@ -20,8 +20,13 @@ function TeamTreeItem({ team, teamsMap, teamToEmployeesMap }: IProps): React.Rea
         <EmployeeTreeItem key={item.id} employee={item} />
       ))}
 
-      {teamsMap && teamsMap[team.id] && teamsMap[team.id].map((item) => (
-        <TeamTreeItem key={item.id} team={item} teamsMap={teamsMap} teamToEmployeesMap={teamToEmployeesMap} />
+      {parentTeamToTeamsMap && parentTeamToTeamsMap[team.id] && parentTeamToTeamsMap[team.id].map((item) => (
+        <TeamTreeItem
+          key={item.id}
+          team={item}
+          parentTeamToTeamsMap={parentTeamToTeamsMap}
+          teamToEmployeesMap={teamToEmployeesMap}
+        />
       ))}
     </StyledTeamTreeItem>
   );

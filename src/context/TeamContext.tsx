@@ -14,13 +14,13 @@ export interface ITeamsMap {
 }
 
 interface ITeamsContext {
-  teamsMap: ITeamsMap;
+  parentTeamToTeamsMap: ITeamsMap;
   teams: ITeamData[];
   addTeam(data: Partial<ITeamData>): void;
 }
 
 export const TeamContext = createContext<ITeamsContext>({
-  teamsMap: {},
+  parentTeamToTeamsMap: {},
   teams: [],
   addTeam: () => {},
 });
@@ -55,7 +55,7 @@ export function TeamContextProvider({ children }: { children: React.ReactNode })
 
   // Preparing data for rendering team tree. It is Map object, where key is 'id' of parent team and value is
   // array of children teams. Top level has key named 'root'.
-  const teamsMap = useMemo(() => (data ? data.reduce<ITeamsMap>(
+  const parentTeamToTeamsMap = useMemo(() => (data ? data.reduce<ITeamsMap>(
     (result, item) => {
       if (!item.parentTeam) {
         result.root.push(item);
@@ -73,7 +73,7 @@ export function TeamContextProvider({ children }: { children: React.ReactNode })
   ) : ({} as ITeamsMap)), [data]);
 
   const value = useMemo(() => ({
-    teamsMap,
+    parentTeamToTeamsMap,
     teams: data || [],
     addTeam,
   }), [data]);

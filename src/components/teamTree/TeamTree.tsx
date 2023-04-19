@@ -7,19 +7,24 @@ import { EmployeeContext } from '../../context/EmployeeContext';
 import TeamTreeItem from '../teamTreeItem/TeamTreeItem';
 
 function TeamTree() {
-  const { teamsMap } = useContext(TeamContext);
+  const { parentTeamToTeamsMap } = useContext(TeamContext);
   const { teamToEmployeesMap } = useContext(EmployeeContext);
 
   return (
-    teamsMap.root
+    parentTeamToTeamsMap.root
     && (
     <TreeView
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
-      defaultExpanded={teamsMap.root.map((team) => team.id)}
+      defaultExpanded={parentTeamToTeamsMap.root.map((team) => team.id)}
     >
-      {teamsMap.root.map((item) => (
-        <TeamTreeItem key={item.id} team={item} teamsMap={teamsMap} teamToEmployeesMap={teamToEmployeesMap} />
+      {parentTeamToTeamsMap.root.map((item) => (
+        <TeamTreeItem
+          key={item.id}
+          team={item}
+          parentTeamToTeamsMap={parentTeamToTeamsMap}
+          teamToEmployeesMap={teamToEmployeesMap}
+        />
       ))}
     </TreeView>
     )
