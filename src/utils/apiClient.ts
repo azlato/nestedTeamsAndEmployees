@@ -4,8 +4,7 @@ const headers = {
   Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_KEY}`,
 };
 
-const simpleApiClient = (url: string, body?: Object) => {
-  const method = body ? 'POST' : 'GET';
+const simpleApiClient = (url: string, method: string = 'GET', body?: Object) => {
   const data = body ? { body: JSON.stringify(body) } : {};
 
   return fetch(

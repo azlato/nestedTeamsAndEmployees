@@ -22,7 +22,7 @@ const style = {
 
 function EmployeeEditModal() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { employees } = useContext(EmployeeContext);
+  const { employees, updateEmployee } = useContext(EmployeeContext);
   const employeeId = searchParams.get('employeeId');
   const isOpen = !!employeeId;
 
@@ -40,7 +40,7 @@ function EmployeeEditModal() {
     [employees, employeeId],
   );
 
-  const onClose = useCallback(() => {
+  const onCloseModal = useCallback(() => {
     setSearchParams((prev: URLSearchParams) => {
       prev.delete('employeeId');
       return prev;
@@ -48,14 +48,18 @@ function EmployeeEditModal() {
   }, []);
 
   const onSubmit = (values: Partial<IEmployeeData>) => {
+    updateEmployee(values);
     console.log('submit', JSON.stringify(values, null, 2));
+
+    // Close modal by removing id parameter
+    onCloseModal();
   };
 
   return (
     <Modal
       open={isOpen}
       aria-labelledby="employee-modal-title"
-      onClose={onClose}
+      onClose={onCloseModal}
     >
       <Box sx={{ ...style, width: 600 }}>
         <Typography variant="h6" id="employee-modal-title" sx={{ mb: 2 }}>

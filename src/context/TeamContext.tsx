@@ -27,8 +27,11 @@ export const TeamContext = createContext<ITeamsContext>({
 
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/teams';
 
+/**
+ * Adding team
+ */
 const postTeam = async (data: Partial<ITeamsMap>): Promise<string> => {
-  const response = await apiClient(API_URL, data);
+  const response = await apiClient(API_URL, 'POST', data);
   if (!response.ok) {
     throw new Error(`Failed to insert new team. Status ${response.statusText}: ${response.body}`);
   }

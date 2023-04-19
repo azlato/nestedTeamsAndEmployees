@@ -21,20 +21,37 @@ interface IEmployeesContext {
   teamToEmployeesMap: IEmployeesMap;
   employees: IEmployeeData[];
   addEmployee(data: Partial<IEmployeeData>): void;
+  updateEmployee(data: Partial<IEmployeeData>): void;
 }
 
 export const EmployeeContext = createContext<IEmployeesContext>({
   teamToEmployeesMap: {},
   employees: [],
   addEmployee: () => {},
+  updateEmployee: () => {},
 });
 
 const API_URL = 'https://nktebdhspzvpwguqcksn.supabase.co/rest/v1/employees';
 
+/**
+ * Adding employee
+ */
 const postEmployee = async (data: Partial<IEmployeeData>): Promise<string> => {
-  const response = await apiClient(API_URL, data);
+  const response = await apiClient(API_URL, 'POST', data);
   if (!response.ok) {
     throw new Error(`Failed to insert new employee. Status ${response.statusText}: ${response.body}`);
+  }
+  return response.text();
+};
+
+/**
+ * Patching data
+ */
+const pathEmployee = async (data: Partial<IEmployeeData>): Promise<string> => {
+  const acceptableData = { ...data, id: undefined, createdAt: undefined };
+  const response = await apiClient(`${API_URL}?id=eq.${data.id}`, 'PATCH', acceptableData);
+  if (!response.ok) {
+    throw new Error(`Failed to edit employee ${data.id}. Status ${response.statusText}: ${response.body}`);
   }
   return response.text();
 };
@@ -48,6 +65,12 @@ export function EmployeeContextProvider({ children }: { children: React.ReactNod
 
   // Mutations
   const { mutate: addEmployee } = useMutation(postEmployee, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries('employee');
+    },
+  });
+  const { mutate: updateEmployee } = useMutation(pathEmployee, {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries('employee');
@@ -73,6 +96,7 @@ export function EmployeeContextProvider({ children }: { children: React.ReactNod
     teamToEmployeesMap,
     employees: data || [],
     addEmployee,
+    updateEmployee,
   }), [data]);
 
   return <EmployeeContext.Provider value={value}>{children}</EmployeeContext.Provider>;
