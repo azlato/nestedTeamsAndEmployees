@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import {
-  Box, Button, Typography, FormControl, InputLabel, Select, MenuItem,
+  Box, Button, FormControl, InputLabel, Select, MenuItem,
 } from '@mui/material';
 import { StyledTextField } from '../employeeForm/EmployeeFormStyle';
 import { TeamContext } from '../../context/TeamContext';
@@ -25,7 +25,6 @@ function TeamForm() {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>Add team</Typography>
       <form onSubmit={formik.handleSubmit}>
         <StyledTextField
           fullWidth

@@ -19,11 +19,13 @@ export interface IEmployeesMap {
 
 interface IEmployeesContext {
   teamToEmployeesMap: IEmployeesMap;
+  employees: IEmployeeData[];
   addEmployee(data: Partial<IEmployeeData>): void;
 }
 
 export const EmployeeContext = createContext<IEmployeesContext>({
   teamToEmployeesMap: {},
+  employees: [],
   addEmployee: () => {},
 });
 
@@ -69,6 +71,7 @@ export function EmployeeContextProvider({ children }: { children: React.ReactNod
 
   const value = useMemo(() => ({
     teamToEmployeesMap,
+    employees: data || [],
     addEmployee,
   }), [data]);
 

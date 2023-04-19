@@ -2,39 +2,36 @@ import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import dayjs from 'dayjs';
 import {
-  Box, Button, Typography, FormControl, InputLabel, Select, MenuItem,
+  Box, Button, FormControl, InputLabel, Select, MenuItem,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { StyledTextField } from './EmployeeFormStyle';
 import { TeamContext } from '../../context/TeamContext';
-import { EmployeeContext } from '../../context/EmployeeContext';
+import { IEmployeeData } from '../../context/EmployeeContext';
 
-function EmployeeForm() {
+interface IProps {
+  isEditing?: boolean;
+  initialValues: { [name: string]: string | null | dayjs.Dayjs };
+  onSubmit(values: Partial<IEmployeeData>): void;
+}
+
+function EmployeeForm({ isEditing, initialValues, onSubmit }: IProps) {
   const { teams } = useContext(TeamContext);
-  const { addEmployee } = useContext(EmployeeContext);
 
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      surname: '',
-      startDate: '',
-      endDate: '',
-      team: '',
-      position: '',
-    },
-    onSubmit: (values) => {
+    initialValues,
+    onSubmit: (values: { [name: string]: string | null | dayjs.Dayjs }) => {
       const normalizedValues = {
         ...values,
-        startDate: dayjs.isDayjs(values.startDate) ? values.startDate.format('YYYY-MM-DD') : values.startDate,
+        startDate: dayjs.isDayjs(values.startDate) ? values.startDate.format('YYYY-MM-DD') : values.startDate || '',
         endDate: dayjs.isDayjs(values.endDate) ? values.endDate.format('YYYY-MM-DD') : null,
       };
-      addEmployee(normalizedValues);
+      onSubmit(normalizedValues);
     },
   });
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>Add employee</Typography>
       <form onSubmit={formik.handleSubmit}>
         <StyledTextField
           fullWidth
@@ -110,11 +107,11 @@ function EmployeeForm() {
           error={formik.touched.position && Boolean(formik.errors.position)}
         />
         <Button color="secondary" variant="contained" fullWidth type="submit">
-          Add employee
+          {isEditing ? 'Edit employee' : 'Add employee'}
         </Button>
       </form>
     </Box>
   );
 }
 
-export default EmployeeForm;
+export default React.memo(EmployeeForm);

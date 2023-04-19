@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 import {
   Modal, Box, Typography,
 } from '@mui/material';
+import EmployeeForm from '../employeeForm/EmployeeForm';
+import { EmployeeContext, IEmployeeData } from '../../context/EmployeeContext';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -19,14 +22,33 @@ const style = {
 
 function EmployeeEditModal() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { employees } = useContext(EmployeeContext);
   const employeeId = searchParams.get('employeeId');
   const isOpen = !!employeeId;
 
-  const onClose = () => {
+  const initialEmployeeData = useMemo(
+    () => {
+      const employee = employees.find((item) => item.id === employeeId);
+      if (!employee) return null;
+
+      return {
+        ...employee,
+        startDate: dayjs(employee.startDate),
+        endDate: dayjs(employee.endDate),
+      };
+    },
+    [employees, employeeId],
+  );
+
+  const onClose = useCallback(() => {
     setSearchParams((prev: URLSearchParams) => {
       prev.delete('employeeId');
       return prev;
     });
+  }, []);
+
+  const onSubmit = (values: Partial<IEmployeeData>) => {
+    console.log('submit', JSON.stringify(values, null, 2));
   };
 
   return (
@@ -42,6 +64,14 @@ function EmployeeEditModal() {
           {employeeId}
           &quot;
         </Typography>
+        {initialEmployeeData
+            && (
+            <EmployeeForm
+              isEditing
+              initialValues={initialEmployeeData}
+              onSubmit={onSubmit}
+            />
+            )}
       </Box>
     </Modal>
   );
