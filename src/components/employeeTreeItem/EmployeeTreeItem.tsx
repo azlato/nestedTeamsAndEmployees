@@ -16,7 +16,7 @@ function EmployeeItem({ employee }: IProps): React.ReactElement {
   return (
     <StyledEmployeeTreeItem
       nodeId={employee.id}
-      label={`${employee.name} - ${employee.position}`}
+      label={`${employee.name} ${employee.surname} - ${employee.position}`}
       isQuitEmployee={isQuitEmployee}
       disabled={isQuitEmployee}
       title={isQuitEmployee ? `Quit job at ${endDateFormatted}` : undefined}
