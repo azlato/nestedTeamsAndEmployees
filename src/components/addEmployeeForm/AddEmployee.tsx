@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import {
-  Button, Typography, FormControl, InputLabel, Select, MenuItem,
+  Box, Button, Typography, FormControl, InputLabel, Select, MenuItem,
 } from '@mui/material';
-import Box from '@mui/material/Box';
-import { StyledTextField } from './AddTeamStyle';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { StyledTextField } from './AddEmployeeStyle';
 import { TeamContext } from '../../context/TeamContext';
 
 function AddTeam() {
@@ -26,7 +26,7 @@ function AddTeam() {
 
   return (
     <Box>
-      <Typography variant="h3">Add team</Typography>
+      <Typography variant="h4" sx={{ mb: 2 }}>Add employee</Typography>
       <form onSubmit={formik.handleSubmit}>
         <StyledTextField
           fullWidth
@@ -43,29 +43,39 @@ function AddTeam() {
           required
           id="surname"
           name="surname"
-          label="surname"
+          label="Surname"
           value={formik.values.surname}
           onChange={formik.handleChange}
           error={formik.touched.surname && Boolean(formik.errors.surname)}
         />
-        <StyledTextField
-          fullWidth
-          required
-          id="startDate"
-          name="startDate"
-          label="startDate"
+        <DatePicker
+          format="YYYY-MM-DD"
+          label="Start date"
+          onChange={(value) => formik.setFieldValue('startDate', value, true)}
           value={formik.values.startDate}
-          onChange={formik.handleChange}
-          error={formik.touched.startDate && Boolean(formik.errors.startDate)}
+          slotProps={{
+            textField: {
+              required: true,
+              fullWidth: true,
+              variant: 'outlined',
+              error: formik.touched.startDate && Boolean(formik.errors.startDate),
+            },
+          }}
+          sx={{ mb: 1 }}
         />
-        <StyledTextField
-          fullWidth
-          id="endDate"
-          name="endDate"
-          label="endDate"
+        <DatePicker
+          format="YYYY-MM-DD"
+          label="End date"
+          onChange={(value) => formik.setFieldValue('endDate', value, true)}
           value={formik.values.endDate}
-          onChange={formik.handleChange}
-          error={formik.touched.endDate && Boolean(formik.errors.endDate)}
+          slotProps={{
+            textField: {
+              fullWidth: true,
+              variant: 'outlined',
+              error: formik.touched.endDate && Boolean(formik.errors.endDate),
+            },
+          }}
+          sx={{ mb: 1 }}
         />
         <FormControl required fullWidth sx={{ mb: 1 }}>
           <InputLabel id="teamLabel">Team</InputLabel>
@@ -74,7 +84,7 @@ function AddTeam() {
             id="team"
             name="team"
             value={formik.values.team}
-            label="team"
+            label="Team"
             onChange={formik.handleChange}
             error={formik.touched.team && Boolean(formik.errors.team)}
           >
@@ -86,7 +96,7 @@ function AddTeam() {
           required
           id="position"
           name="position"
-          label="position"
+          label="Position"
           value={formik.values.position}
           onChange={formik.handleChange}
           error={formik.touched.position && Boolean(formik.errors.position)}

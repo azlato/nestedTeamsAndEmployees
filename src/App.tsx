@@ -7,7 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import lightTheme from './theme';
 import TeamTree from './components/teamTree/TeamTree';
 import Header from './components/header/Header';
-import AddTeam from './components/addTeamForm/AddTeam';
+import AddEmployee from './components/addEmployeeForm/AddEmployee';
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
             <TeamTree />
           </Grid>
           <Grid item xs={12} md={4}>
-            <AddTeam />
+            <AddEmployee />
           </Grid>
         </Grid>
       </Container>
