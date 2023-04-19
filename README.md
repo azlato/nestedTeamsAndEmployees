@@ -20,8 +20,8 @@
 This project was bootstrapped with [Create vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
 
 ## Scripts
-`npm run dev`: Run local dev server
-`npm run build`: Build project for production
+- `npm run dev`: Run local dev server
+- `npm run build`: Build project for production
 
 ## Project data
 This project is using https://github.com/Naomak/alveno-job API
